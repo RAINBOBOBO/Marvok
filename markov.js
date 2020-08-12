@@ -26,30 +26,37 @@ class MarkovMachine {
       let nextWord = this.words[i+1]
       console.log("currentWord is:", currentWord, "and nextWord is:", nextWord, "this is i type:", typeof i);
 
+      let currentFollowers = this.chains[currentWord] || [];
+      // if nextWord is the last word, push null
+      currentFollowers.push(nextWord || null);
+      this.chains[currentWord] = currentFollowers;
+
+      // this.chains[currentWord] = (this.chains[currentWord] || []).push(nextWord || null);
+
       // if word exists in the chains obj:
-      if (this.chains[currentWord]) {
-        console.log("word exists");
+    //   if (this.chains[currentWord]) {
+    //     console.log("word exists");
 
-        // check if there is a next word
-        if (nextWord === undefined) {
-          // if there is no word, put null in for currentWord
-          this.chains[currentWord].push(null);
-        } else {
-          this.chains[currentWord].push(nextWord);
-        }
-      } else {
-        console.log("word doesnt exist");
-        // create an empty array
-        this.chains[currentWord] = [];
+    //     // check if there is a next word
+    //     if (nextWord === undefined) {
+    //       // if there is no word, put null in for currentWord
+    //       this.chains[currentWord].push(null);
+    //     } else {
+    //       this.chains[currentWord].push(nextWord);
+    //     }
+    //   } else {
+    //     console.log("word doesnt exist");
+    //     // create an empty array
+    //     this.chains[currentWord] = [];
 
-        // check if there is a next word
-        if (nextWord === undefined) {
-          // if there is no word, put null in for currentWord
-          this.chains[currentWord].push(null);
-        } else {
-          this.chains[currentWord].push(nextWord);
-        }
-      }
+    //     // check if there is a next word
+    //     if (nextWord === undefined) {
+    //       // if there is no word, put null in for currentWord
+    //       this.chains[currentWord].push(null);
+    //     } else {
+    //       this.chains[currentWord].push(nextWord);
+    //     }
+    //   }
     } 
     console.log("this is chains:", this.chains);
   }
@@ -70,13 +77,19 @@ class MarkovMachine {
 
     let nextWord = randomWord;
 
-    let count = 0;
-    while (nextWord !== null && count <= numWords) {
-      console.log("inside while loop, nextWord is:", nextWord, nextWord === null);
+    for (let i=0; i<numWords && nextWord !== null; i++) {
+      console.log("inside for loop, nextWord is:", nextWord, nextWord === null);
       this.text += nextWord + " ";
       nextWord = this.getNextWord(nextWord)
-      count++;
     }
+
+    // let count = 0;
+    // while (nextWord !== null && count <= numWords) {
+    //   console.log("inside while loop, nextWord is:", nextWord, nextWord === null);
+    //   this.text += nextWord + " ";
+    //   nextWord = this.getNextWord(nextWord)
+    //   count++;
+    // }
 
     console.log("this is the result:", this.text);
   }
@@ -93,3 +106,5 @@ class MarkovMachine {
 }
 
 module.exports = { MarkovMachine };
+
+// Good further study: Markov chain bigrams
